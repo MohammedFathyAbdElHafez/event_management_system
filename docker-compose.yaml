@@ -7,11 +7,16 @@ services:
       - "8080:80"
     volumes:
       - ./drupal:/var/www/html
+      - ./web/modules/custom:/var/www/html/web/modules/custom
+      - ./web/themes/custom:/var/www/html/web/themes/custom
     depends_on:
       - db
     build:
         context: ./
         dockerfile: ./Dockerfile/Dockerfile
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    command: ["apache2-foreground"]
 
   db:
     image: mysql:8.0
