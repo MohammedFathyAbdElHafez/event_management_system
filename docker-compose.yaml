@@ -9,6 +9,9 @@ services:
       - ./drupal:/var/www/html
     depends_on:
       - db
+    build:
+        context: ./
+        dockerfile: ./Dockerfile/Dockerfile
 
   db:
     image: mysql:8.0
