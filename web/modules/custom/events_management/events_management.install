@@ -1,0 +1,101 @@
+<?php
+
+use Drupal\Core\Database\Database;
+use Drupal\node\Entity\NodeType;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+
+/**
+ * Implements hook_install().
+ */
+function events_management_install() {
+  // Create the 'event' content type.
+  $content_type = NodeType::create([
+    'type' => 'event',
+    'name' => 'Event',
+    'description' => 'Use this content type to create events.',
+  ]);
+  $content_type->save();
+
+  // Add fields to the 'event' content type.
+  events_management_add_event_fields();
+
+  // Create custom table for logging configuration changes.
+  $schema = Database::getConnection()->schema();
+  $schema->createTable('events_management_log', [
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'message' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+  ]);
+}
+
+/**
+ * Adds fields to the 'event' content type.
+ */
+function events_management_add_event_fields() {
+  $fields = [
+    'field_event_title' => [
+      'type' => 'text',
+      'label' => 'Event Title',
+    ],
+    'field_event_image' => [
+      'type' => 'image',
+      'label' => 'Event Image',
+    ],
+    'field_event_description' => [
+      'type' => 'text_long',
+      'label' => 'Event Description',
+    ],
+    'field_event_start_time' => [
+      'type' => 'datetime',
+      'label' => 'Start Time',
+    ],
+    'field_event_end_time' => [
+      'type' => 'datetime',
+      'label' => 'End Time',
+    ],
+    'field_event_category' => [
+      'type' => 'entity_reference',
+      'label' => 'Event Category',
+      'settings' => [
+        'target_type' => 'taxonomy_term',
+        'handler' => 'default',
+        'handler_settings' => [
+          'target_bundles' => ['event_category'],
+        ],
+      ],
+    ],
+  ];
+
+  foreach ($fields as $field_name => $field_info) {
+    FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'type' => $field_info['type'],
+    ])->save();
+
+    FieldConfig::create([
+      'field_storage' => FieldStorageConfig::loadByName('node', $field_name),
+      'bundle' => 'event',
+      'label' => $field_info['label'],
+      'settings' => isset($field_info['settings']) ? $field_info['settings'] : [],
+    ])->save();
+  }
+}
