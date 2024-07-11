@@ -6,17 +6,16 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./drupal:/var/www/html
+      #- ./drupal:/var/www/html
       - ./web/modules/custom:/var/www/html/web/modules/custom
+      - ./web/modules/custom/events_management:/var/www/html/web/modules/custom/events_management
       - ./web/themes/custom:/var/www/html/web/themes/custom
+      - ./web/sites/default/files:/var/www/html/web/sites/default/files
     depends_on:
       - db
     build:
         context: ./
-        dockerfile: ./Dockerfile/Dockerfile
-    environment:
-      - COMPOSER_ALLOW_SUPERUSER=1
-    command: ["apache2-foreground"]
+        dockerfile: ./Dockerfile
 
   db:
     image: mysql:8.0
@@ -35,6 +34,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "8081:80"
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
 
 volumes:
   db_data:
