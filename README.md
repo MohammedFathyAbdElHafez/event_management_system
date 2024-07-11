@@ -46,6 +46,15 @@ Use docker or the Drupal admin interface to enable the module:
 
 - Using docker:
   ```bash
-  docker-compose exec web drush en event_management -y
+  docker-compose exec web drush en events_management -y
   docker-compose exec web drush cr
   ```
+
+### 4. Access the drupal UI:
+
+- You can access the drupal UI from this url by this credentials:
+url: http://localhost:8080/
+username: admin
+password: admin
+
+

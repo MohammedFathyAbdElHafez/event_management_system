@@ -37,7 +37,7 @@ Use docker or the Drupal admin interface to enable the module:
 
 - Using docker:
   ```bash
-  docker-compose exec web drush en event_management -y
+  docker-compose exec web drush en events_management -y
   docker-compose exec web drush cr
   ```
 
