@@ -57,4 +57,11 @@ url: http://localhost:8080/
 username: admin
 password: admin
 
+### 4. Install module:
+
+- go to `admin/modules` and upload .zip file to module.
+- install the module to access module routes.
+
+
+
 
