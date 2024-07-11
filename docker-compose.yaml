@@ -26,6 +26,8 @@ services:
       MYSQL_PASSWORD: drupal
     volumes:
       - db_data:/var/lib/mysql
+    ports:
+      - "8082:3306"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

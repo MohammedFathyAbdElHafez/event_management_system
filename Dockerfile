@@ -29,5 +29,8 @@ RUN chown -R www-data:www-data /var/www/html
 # Copy the rest of your Drupal site
 COPY . /var/www/html
 
+# Ensure correct permissions
+RUN chown -R www-data:www-data /var/www/html/web/modules/custom
+
 # Copy the created module to docker container
 COPY ./web/modules/custom/events_management /var/www/html/web/modules/custom/events_management
