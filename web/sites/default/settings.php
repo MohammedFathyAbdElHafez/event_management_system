@@ -4,7 +4,7 @@
 $databases['default']['default'] = [
   'database' => 'drupal',
   'username' => 'drupal',
-  'password' => 'root',
+  'password' => 'drupal',
   'host' => 'db',
   'port' => '3306',
   'driver' => 'mysql',
